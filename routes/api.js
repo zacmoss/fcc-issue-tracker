@@ -25,7 +25,12 @@ module.exports = function (app) {
     
     .post(function (req, res){
       var project = req.params.project;
-      
+      console.log(req.body);
+      let title = req.body.issue_title;
+      let text = req.body.issue_text;
+      let by = req.body.created_by;
+      if (
+      //console.log(title + ", " + text + ", " + by);
     })
     
     .put(function (req, res){
