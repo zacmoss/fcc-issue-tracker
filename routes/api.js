@@ -19,12 +19,17 @@ var Schema = mongoose.Schema;
 mongoose.connect(CONNECTION_STRING);
 
 var schema = new Schema({
-  name : String,
-  age : Number,
-  favoriteFoods : [String]
+  issue_title : String,
+  issue_text : String,
+  created_by : String,
+  assigned_to : String,
+  status_text : String,
+  created_on : Number,
+  updated_on : Number,
+  open : Boolean
 });
 
-var Person = mongoose.model('Person', schema);
+var Issue = mongoose.model('Issue', schema);
 
 module.exports = function (app) {
 
@@ -43,12 +48,25 @@ module.exports = function (app) {
       let by = req.body.created_by;
       let assignedTo = req.body.assigned_to;
       let statusText = req.body.status_text;
+      let createdOn = 1;
+      let updatedOn = 1;
+      let open = true;
       console.log('sT: ' + statusText);
-      var createAndSavePerson = function(done) {
-        const person = new Person({name: "dave", age: "30", favoriteFoods: ["Burgers"]});
-        person.save((err, data) => (err ? done(err) : done(null, data)));
+      var createAndSaveIssue = function(done) {
+        const issue = new Issue({issue_title: title,
+                                 issue_text: text,
+                                 created_by: by,
+                                 assigned_to: assignedTo,
+                                 status_text: statusText,
+                                 created_on: createdOn,
+                                 updated_on: updatedOn,
+                                 open: open
+                                });
+        issue.save();
+        //issue.save((err, data) => (err ? done(err) : done(null, data)));
         //done(null /*, data*/);
       };
+      createAndSaveIssue();
     })
     
     .put(function (req, res){
