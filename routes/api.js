@@ -8,6 +8,8 @@
 
 'use strict';
 
+// to select oid in database use ObjectId in id query as seen below
+
 var expect = require('chai').expect;
 var MongoClient = require('mongodb');
 var ObjectId = require('mongodb').ObjectID;
@@ -95,6 +97,17 @@ module.exports = function (app) {
       MongoClient.connect(CONNECTION_STRING, { useNewUrlParser: true }, function(err, db) {
         if (err) throw err;
         var dbo = db.db("fcc-cert6-project2");
+        if (req.body.open === 'false') {
+          open = false;
+        } else {
+          open = true;
+        }
+        
+        // gets open boolean
+        //let open;
+        //dbo.collection(project).findOne({_id: ObjectId(id)}, function(err, result){open = result.open});
+        //let open = true;
+        
         
         //works
         //dbo.collection(project).findOne({title: "test99"}, function(err, result){res.json(result)});
@@ -103,7 +116,16 @@ module.exports = function (app) {
         dbo.collection(project).findOneAndUpdate(
             //{ title: "test99" },
             {_id: ObjectId(id)},
-            { $set: {created_by: 'last'} }
+            { $set: {
+              title: req.body.issue_title,
+              text: req.body.issue_text,
+              created_by: req.body.created_by,
+              assignedTo: req.body.assigned_to,
+              statusText: req.body.status_text,
+              //createdOn: new Date(),
+              updatedOn: new Date(),
+              open: open
+            } }
             //upsert: true
         );
         
@@ -112,6 +134,7 @@ module.exports = function (app) {
       
     })
     
+    // works
     .delete(function (req, res){
       var project = req.params.project;
       let id = req.body._id;
