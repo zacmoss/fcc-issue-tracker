@@ -151,7 +151,17 @@ module.exports = function (app) {
         })
         */
         //dbo.collection(project).findOne({title: '"test99"'}, function(err,result){console.log(result)})
-        dbo.collection(project).findOne(function(err,result){res.json(result)});
+        
+        //works
+        //dbo.collection(project).findOne(function(err,result){res.json(result)});
+        
+        //works
+        //dbo.collection(project).findOne({title: "test99"}, function(err, result){res.json(result)});
+        
+        //not
+        //dbo.collection(project).findOne({id: "5ba933d3779763034157969b"}, function(err, result){res.json(result)});
+
+        
       });
       
     })
