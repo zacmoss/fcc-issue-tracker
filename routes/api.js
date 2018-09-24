@@ -43,7 +43,7 @@ module.exports = function (app) {
       var project = req.params.project; // /api/issues/<project>
       let query = req.query // /api/issues/apitest?<query>
       
-      MongoClient.connect(CONNECTION_STRING, function(err, db) {
+      MongoClient.connect(CONNECTION_STRING, { useNewUrlParser: true }, function(err, db) {
         if (err) throw err;
         var dbo = db.db("fcc-cert6-project2");
         
@@ -62,13 +62,13 @@ module.exports = function (app) {
       let query = req.query;
       console.log(project);
       //console.log(req.body);
-      MongoClient.connect(CONNECTION_STRING, function(err, db) {
+      MongoClient.connect(CONNECTION_STRING, { useNewUrlParser: true }, function(err, db) {
         if (err) throw err;
         var dbo = db.db("fcc-cert6-project2");
         
         // works
         // returned json is weird, but info correctly saved in db
-        if (!db.collection(project)) dbo.createCollection(project);
+        if (!dbo.collection(project)) dbo.createCollection(project);
         let collection = db.collection(project);
         let issue = {
           title: req.body.issue_title,
@@ -131,6 +131,7 @@ module.exports = function (app) {
       MongoClient.connect(CONNECTION_STRING, { useNewUrlParser: true }, function(err, db) {
         if (err) throw err;
         var dbo = db.db("fcc-cert6-project2");
+        //let connection = 
         
         /*
         dbo.collection(project).findOneAndUpdate(
@@ -161,12 +162,14 @@ module.exports = function (app) {
         //does not work
         //dbo.collection(project).findOne({id: "5ba933d3779763034157969b"}, function(err, result){res.json(result)});
 
+        // WORKS ObjectId(id)!!!!!
         dbo.collection(project).findOneAndUpdate(
             //{ title: "test99" },
-            {_id: '5ba934138144f7037e2f2bd9'},
+            {_id: ObjectId(id)},
             { $set: {created_by: 'last'} }
             //upsert: true
         );
+        
         
       });
       
