@@ -44,11 +44,14 @@ module.exports = function (app) {
     
     .post(function (req, res){
       var project = req.params.project;
+      //let query = req.query;
       console.log(project);
       //console.log(req.body);
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
         //console.log('count: ' + db.collection.count('issues'));
-        console.log(db.Issue.count);
+        //console.log(Issue.collections);
+        let collection = db.collection(project);
+        collection.find(query).toArray(function(err,docs){res.json(docs)});
         /*
         if (db.collection(project)) {
           console.log('collection exists');
@@ -61,6 +64,7 @@ module.exports = function (app) {
         */
       });
       
+    /*
       let id;
       let title = req.body.issue_title;
       let text = req.body.issue_text;
@@ -88,11 +92,12 @@ module.exports = function (app) {
           } else {
             id = data._id;
             res.json({data_saved: data});
-          //done(null /*, data*/);
+          
           }
         });
       }
       createAndSaveIssue();
+      */
     })
     
     .put(function (req, res){
