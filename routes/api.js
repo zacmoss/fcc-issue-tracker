@@ -20,6 +20,7 @@ Promise = require('bluebird');
 mongoose.Promise = Promise;
 mongoose.connect(CONNECTION_STRING);
 
+/*
 var schema = new Schema({
   issue_title : String,
   issue_text : String,
@@ -30,8 +31,9 @@ var schema = new Schema({
   updated_on : Number,
   open : Boolean
 });
+*/
 
-var Issue = mongoose.model('Issue', schema);
+//var Issue = mongoose.model('Issue', schema);
 
 module.exports = function (app) {
 
@@ -122,7 +124,17 @@ module.exports = function (app) {
     
     .put(function (req, res){
       var project = req.params.project;
-      let id = 
+      let id = req.body._id;
+      // issue_title issue_text created_by assigned_to status_text open
+      let open = req.body.open; // if checked, will return false, if not checked will be undefined
+    
+      MongoClient.connect(CONNECTION_STRING, function(err, db) {
+        if (err) throw err;
+        var dbo = db.db("fcc-cert6-project2");
+        
+        dbo.collection(project).findOneAndUpdate({_id: id}, {age: ageToSet}, {new: true}, function(err, data) {})
+
+      });
       
     })
     
