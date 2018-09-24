@@ -66,7 +66,7 @@ module.exports = function (app) {
         
         // works
         // returned json is weird, but info correctly saved in db
-        dbo.createCollection(project);
+        if (!db.collection(project)) dbo.createCollection(project);
         let collection = db.collection(project);
         let issue = {
           title: req.body.issue_title,
@@ -74,7 +74,7 @@ module.exports = function (app) {
           created_by: req.body.created_by,
           assignedTo: req.body.assigned_to,
           statusText: req.body.status_text,
-          reatedOn: 1,
+          createdOn: 1,
           updatedOn: 1,
           open: true
         }
@@ -122,6 +122,7 @@ module.exports = function (app) {
     
     .put(function (req, res){
       var project = req.params.project;
+      let id = 
       
     })
     
