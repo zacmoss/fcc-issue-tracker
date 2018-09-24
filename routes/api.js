@@ -132,7 +132,14 @@ module.exports = function (app) {
         if (err) throw err;
         var dbo = db.db("fcc-cert6-project2");
         
-        dbo.collection(project).findOneAndUpdate({_id: id}, {age: ageToSet}, {new: true}, function(err, data) {})
+        dbo.collection(project).findOneAndUpdate(
+          {_id: '5ba93371f65f59006acf15e2'},
+          //{title: "test77"},
+          {created_by: 'tommy'},
+          {new: true},
+          function(err, data) {
+            res.json(data);
+        });
 
       });
       
