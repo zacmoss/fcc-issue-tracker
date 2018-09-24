@@ -47,6 +47,9 @@ module.exports = function (app) {
       console.log(project);
       //console.log(req.body);
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
+        //console.log('count: ' + db.collection.count('issues'));
+        console.log(db.Issue.count);
+        /*
         if (db.collection(project)) {
           console.log('collection exists');
           db.createCollection(project);
@@ -55,6 +58,7 @@ module.exports = function (app) {
           db.createCollection(project);
           //var Issue = mongoose.model('Issue', schema);
         }
+        */
       });
       
       let id;
