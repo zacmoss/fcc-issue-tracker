@@ -47,8 +47,22 @@ module.exports = function (app) {
           collection.find(query).toArray(function(err,docs){res.json(docs)});
       });
       */
-      mongoose.connection.db.collection('issues').find({created_by: 'zac'}).limit(1).exec(function(err, data) {
-      res.json({data: data});
+      MongoClient.connect(CONNECTION_STRING, function(err, db) {
+        if (err) throw err;
+        var dbo = db.db("fcc-cert6-project2");
+        //works
+        /*
+        dbo.collection("issues").findOne({}, function(err, result) {
+          if (err) throw err;
+          console.log(result);
+          db.close();
+        });
+        */
+        dbo.collection("issues").find({query}, function(err, result) {
+          if (err) throw err;
+          console.log(result.text);
+          db.close();
+        })
       });
       
       
