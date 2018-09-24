@@ -128,7 +128,7 @@ module.exports = function (app) {
       // issue_title issue_text created_by assigned_to status_text open
       let open = req.body.open; // if checked, will return false, if not checked will be undefined
     
-      MongoClient.connect(CONNECTION_STRING, function(err, db) {
+      MongoClient.connect(CONNECTION_STRING, { useNewUrlParser: true }, function(err, db) {
         if (err) throw err;
         var dbo = db.db("fcc-cert6-project2");
         
@@ -158,9 +158,18 @@ module.exports = function (app) {
         //works
         //dbo.collection(project).findOne({title: "test99"}, function(err, result){res.json(result)});
         
-        //not
+        //does not work
         //dbo.collection(project).findOne({id: "5ba933d3779763034157969b"}, function(err, result){res.json(result)});
 
+        let addExercise = function(done) {
+          dbo.collection(project).findOneAndUpdate({title: "test99"}, {created_by: 'exercise'}, {new: true}, function(err, data) {
+              console.log(project, id);
+              res.json(data);
+              //done(null, data);
+            
+          });
+        }
+        addExercise();
         
       });
       
