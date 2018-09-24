@@ -150,8 +150,8 @@ module.exports = function (app) {
           res.json(doc);
         })
         */
-        dbo.collection(project).findOne({title: '"test99"'}).toArray(function(err,result){res.json(result)})
-
+        //dbo.collection(project).findOne({title: '"test99"'}, function(err,result){console.log(result)})
+        dbo.collection(project).findOne(function(err,result){res.json(result)});
       });
       
     })
