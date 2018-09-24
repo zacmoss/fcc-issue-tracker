@@ -39,6 +39,10 @@ module.exports = function (app) {
   
     .get(function (req, res){
       var project = req.params.project;
+      let query = req.query // /api/issues/apitest?<query>
+      MongoClient.connect(CONNECTION_STRING, function(err, db) {
+        
+      });
       
     })
     
