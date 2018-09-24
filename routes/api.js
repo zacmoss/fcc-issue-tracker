@@ -69,7 +69,7 @@ module.exports = function (app) {
         // works
         // returned json is weird, but info correctly saved in db
         if (!dbo.collection(project)) dbo.createCollection(project);
-        let collection = db.collection(project);
+        let collection = dbo.collection(project);
         let issue = {
           title: req.body.issue_title,
           text: req.body.issue_text,
@@ -83,43 +83,7 @@ module.exports = function (app) {
         collection.insertOne(issue, function(err, doc) {
           //res.json(doc);
         })
-        
       });
-      
-      /*
-      let id;
-      let title = req.body.issue_title;
-      let text = req.body.issue_text;
-      let by = req.body.created_by;
-      let assignedTo = req.body.assigned_to;
-      let statusText = req.body.status_text;
-      let createdOn = 1;
-      let updatedOn = 1;
-      let open = true;
-      const createAndSaveIssue = function(done) {
-        const test = new Issue({issue_title: title,
-                                 issue_text: text,
-                                 created_by: by,
-                                 assigned_to: assignedTo,
-                                 status_text: statusText,
-                                 created_on: createdOn,
-                                 updated_on: updatedOn,
-                                 open: open
-                                });
-        //issue.save();
-        //issue.save((err, data) => (err ? done(err) : done(null, data)));
-        test.save(function(err, data) {
-          if (err) {
-            done(err);
-          } else {
-            id = data._id;
-            res.json({data_saved: data});
-          
-          }
-        });
-      }
-      createAndSaveIssue();
-      */
     })
     
     .put(function (req, res){
@@ -131,37 +95,10 @@ module.exports = function (app) {
       MongoClient.connect(CONNECTION_STRING, { useNewUrlParser: true }, function(err, db) {
         if (err) throw err;
         var dbo = db.db("fcc-cert6-project2");
-        //let connection = 
-        
-        /*
-        dbo.collection(project).findOneAndUpdate(
-          {_id: "5ba93371f65f59006acf15e2"},
-          //{title: "test77"},
-          {created_by: 'tommy'},
-          {new: true},
-          function(err, data) {
-            if (err) console.log(err);
-            res.json(data);
-        });
-        */
-        /*
-        dbo.collection(project).find({_id: '5ba93371f65f59006acf15e2'}, function(err, doc) {
-          if (err) console.log(err);
-          console.log(doc);
-          res.json(doc);
-        })
-        */
-        //dbo.collection(project).findOne({title: '"test99"'}, function(err,result){console.log(result)})
-        
-        //works
-        //dbo.collection(project).findOne(function(err,result){res.json(result)});
         
         //works
         //dbo.collection(project).findOne({title: "test99"}, function(err, result){res.json(result)});
         
-        //does not work
-        //dbo.collection(project).findOne({id: "5ba933d3779763034157969b"}, function(err, result){res.json(result)});
-
         // WORKS ObjectId(id)!!!!!
         dbo.collection(project).findOneAndUpdate(
             //{ title: "test99" },
@@ -177,7 +114,16 @@ module.exports = function (app) {
     
     .delete(function (req, res){
       var project = req.params.project;
-      
+      let id = req.body._id;
+    
+      MongoClient.connect(CONNECTION_STRING, { useNewUrlParser: true }, function(err, db) {
+        if (err) throw err;
+        var dbo = db.db("fcc-cert6-project2");
+        
+        dbo.collection(project).deleteOne({_id: ObjectId(id)});
+        
+      });
+    
     });
     
 };
