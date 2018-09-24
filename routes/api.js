@@ -31,7 +31,7 @@ var schema = new Schema({
   open : Boolean
 });
 
-//var D = mongoose.model('D', schema);
+var Issue = mongoose.model('Issue', schema);
 
 module.exports = function (app) {
 
@@ -49,9 +49,11 @@ module.exports = function (app) {
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
         if (db.collection(project)) {
           console.log('collection exists');
+          db.createCollection(project);
           //console.log(db.collection(project));
         } else {
           db.createCollection(project);
+          //var Issue = mongoose.model('Issue', schema);
         }
       });
       
@@ -65,7 +67,7 @@ module.exports = function (app) {
       let updatedOn = 1;
       let open = true;
       const createAndSaveIssue = function(done) {
-        const d = new D({issue_title: title,
+        const test = new Issue({issue_title: title,
                                  issue_text: text,
                                  created_by: by,
                                  assigned_to: assignedTo,
@@ -76,7 +78,7 @@ module.exports = function (app) {
                                 });
         //issue.save();
         //issue.save((err, data) => (err ? done(err) : done(null, data)));
-        d.save(function(err, data) {
+        test.save(function(err, data) {
           if (err) {
             done(err);
           } else {
