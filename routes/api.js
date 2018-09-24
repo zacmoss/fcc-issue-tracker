@@ -143,11 +143,14 @@ module.exports = function (app) {
             res.json(data);
         });
         */
-        dbo.collection(project).find({_id: id}, function(err, doc) {
+        /*
+        dbo.collection(project).find({_id: '5ba93371f65f59006acf15e2'}, function(err, doc) {
           if (err) console.log(err);
           console.log(doc);
           res.json(doc);
         })
+        */
+        dbo.collection(project).findOne({title: '"test99"'}).toArray(function(err,result){res.json(result)})
 
       });
       
