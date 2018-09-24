@@ -45,6 +45,18 @@ module.exports = function (app) {
     .post(function (req, res){
       var project = req.params.project;
       //console.log(req.body);
+      MongoClient.connect(CONNECTION_STRING, function(err, db) {
+        if (db.collection(project)) {
+          console.log('collection exists');
+        } else {
+          db.createCollection(
+        }
+      });
+      /*
+      if (mongoose.connect(CONNECTION_STRING).collection('issues')) {
+          console.log('works');
+      }
+      */
       let id;
       let title = req.body.issue_title;
       let text = req.body.issue_text;
