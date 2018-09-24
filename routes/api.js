@@ -161,15 +161,12 @@ module.exports = function (app) {
         //does not work
         //dbo.collection(project).findOne({id: "5ba933d3779763034157969b"}, function(err, result){res.json(result)});
 
-        let addExercise = function(done) {
-          dbo.collection(project).findOneAndUpdate({title: "test99"}, {created_by: 'exercise'}, {new: true}, function(err, data) {
-              console.log(project, id);
-              res.json(data);
-              //done(null, data);
-            
-          });
-        }
-        addExercise();
+        dbo.collection(project).findOneAndUpdate(
+            //{ title: "test99" },
+            {_id: '5ba934138144f7037e2f2bd9'},
+            { $set: {created_by: 'last'} }
+            //upsert: true
+        );
         
       });
       
