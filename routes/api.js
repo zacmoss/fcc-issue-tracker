@@ -58,11 +58,12 @@ module.exports = function (app) {
           db.close();
         });
         */
-        dbo.collection("issues").find({query}, function(err, result) {
-          if (err) throw err;
-          console.log(result.text);
-          db.close();
-        })
+        // works
+        /*
+        dbo.collection("issues").find({created_by: 'zac'}).toArray(function(err,docs){res.json(docs)});
+        */
+        
+
       });
       
       
