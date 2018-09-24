@@ -38,17 +38,21 @@ module.exports = function (app) {
   app.route('/api/issues/:project')
   
     .get(function (req, res){
-      var project = req.params.project;
+      var project = req.params.project; // /api/issues/<project>
       let query = req.query // /api/issues/apitest?<query>
+      let created = req.query.created_by;
+      
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
-        
+        let collection = db.collection(project);
+          collection.find(query).toArray(function(err,docs){res.json(docs)});
       });
+      
       
     })
     
     .post(function (req, res){
       var project = req.params.project;
-      //let query = req.query;
+      let query = req.query;
       console.log(project);
       //console.log(req.body);
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
