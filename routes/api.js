@@ -92,16 +92,18 @@ module.exports = function (app) {
       var project = req.params.project;
       let id = req.body._id;
       // issue_title issue_text created_by assigned_to status_text open
-      let open = req.body.open; // if checked, will return false, if not checked will be undefined
+      //let open = req.body.open; // if checked, will return false, if not checked will be undefined
+      let open;
+      if (req.body.open === 'false') {
+        open = false;
+      } else {
+        open = true;
+      }
     
       MongoClient.connect(CONNECTION_STRING, { useNewUrlParser: true }, function(err, db) {
         if (err) throw err;
         var dbo = db.db("fcc-cert6-project2");
-        if (req.body.open === 'false') {
-          open = false;
-        } else {
-          open = true;
-        }
+        
         
         // gets open boolean
         //let open;
