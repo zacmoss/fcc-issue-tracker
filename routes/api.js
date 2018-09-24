@@ -44,7 +44,8 @@ module.exports = function (app) {
     
     .post(function (req, res){
       var project = req.params.project;
-      console.log(req.body);
+      //console.log(req.body);
+      let id;
       let title = req.body.issue_title;
       let text = req.body.issue_text;
       let by = req.body.created_by;
@@ -53,7 +54,6 @@ module.exports = function (app) {
       let createdOn = 1;
       let updatedOn = 1;
       let open = true;
-      console.log('sT: ' + statusText);
       const createAndSaveIssue = function(done) {
         const issue = new Issue({issue_title: title,
                                  issue_text: text,
@@ -64,10 +64,18 @@ module.exports = function (app) {
                                  updated_on: updatedOn,
                                  open: open
                                 });
-        issue.save();
+        //issue.save();
         //issue.save((err, data) => (err ? done(err) : done(null, data)));
-        //done(null /*, data*/);
-      };
+        issue.save(function(err, data) {
+          if (err) {
+            done(err);
+          } else {
+            id = data._id;
+            res.json({data_saved: data});
+          //done(null /*, data*/);
+          }
+        });
+      }
       createAndSaveIssue();
     })
     
