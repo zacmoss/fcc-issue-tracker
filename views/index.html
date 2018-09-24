@@ -74,7 +74,7 @@
       $(function() {
         $('#testForm').submit(function(e) {
           $.ajax({
-            url: '/api/issues/apitest',
+            url: '/api/issues/test',
             type: 'post',
             data: $('#testForm').serialize(),
             success: function(data) {
