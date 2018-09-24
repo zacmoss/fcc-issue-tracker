@@ -132,14 +132,22 @@ module.exports = function (app) {
         if (err) throw err;
         var dbo = db.db("fcc-cert6-project2");
         
+        /*
         dbo.collection(project).findOneAndUpdate(
-          {_id: '5ba93371f65f59006acf15e2'},
+          {_id: "5ba93371f65f59006acf15e2"},
           //{title: "test77"},
           {created_by: 'tommy'},
           {new: true},
           function(err, data) {
+            if (err) console.log(err);
             res.json(data);
         });
+        */
+        dbo.collection(project).find({_id: id}, function(err, doc) {
+          if (err) console.log(err);
+          console.log(doc);
+          res.json(doc);
+        })
 
       });
       
