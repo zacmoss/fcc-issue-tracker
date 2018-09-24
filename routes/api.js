@@ -40,20 +40,16 @@ module.exports = function (app) {
     .get(function (req, res){
       var project = req.params.project; // /api/issues/<project>
       let query = req.query // /api/issues/apitest?<query>
-      //let created = req.query.created_by;
-      /*
-      MongoClient.connect(CONNECTION_STRING, function(err, db) {
-        let collection = db.collection(project);
-          collection.find(query).toArray(function(err,docs){res.json(docs)});
-      });
-      */
+      
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
         if (err) throw err;
         var dbo = db.db("fcc-cert6-project2");
         
         // works
-        dbo.collection(project).find({created_by: 'zac'}).toArray(function(err,result){res.json(result)});
-        
+        //dbo.collection(project).find({created_by: 'zac'}).toArray(function(err,result){res.json(result)});
+        // shows all
+        dbo.collection(project).find().toArray(function(err,result){res.json(result)});
+
       });
       
       
@@ -68,11 +64,27 @@ module.exports = function (app) {
         if (err) throw err;
         var dbo = db.db("fcc-cert6-project2");
         
+        // works
+        // returned json is weird, but info correctly saved in db
         dbo.createCollection(project);
+        let collection = db.collection(project);
+        let issue = {
+          title: req.body.issue_title,
+          text: req.body.issue_text,
+          created_by: req.body.created_by,
+          assignedTo: req.body.assigned_to,
+          statusText: req.body.status_text,
+          reatedOn: 1,
+          updatedOn: 1,
+          open: true
+        }
+        collection.insertOne(issue, function(err, doc) {
+          //res.json(doc);
+        })
         
       });
       
-    
+      /*
       let id;
       let title = req.body.issue_title;
       let text = req.body.issue_text;
