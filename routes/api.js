@@ -40,7 +40,7 @@ module.exports = function (app) {
     .get(function (req, res){
       var project = req.params.project; // /api/issues/<project>
       let query = req.query // /api/issues/apitest?<query>
-      let created = req.query.created_by;
+      //let created = req.query.created_by;
       /*
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
         let collection = db.collection(project);
@@ -50,20 +50,10 @@ module.exports = function (app) {
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
         if (err) throw err;
         var dbo = db.db("fcc-cert6-project2");
-        //works
-        /*
-        dbo.collection("issues").findOne({}, function(err, result) {
-          if (err) throw err;
-          console.log(result);
-          db.close();
-        });
-        */
-        // works
-        /*
-        dbo.collection("issues").find({created_by: 'zac'}).toArray(function(err,docs){res.json(docs)});
-        */
         
-
+        // works
+        dbo.collection(project).find({created_by: 'zac'}).toArray(function(err,result){res.json(result)});
+        
       });
       
       
@@ -75,23 +65,14 @@ module.exports = function (app) {
       console.log(project);
       //console.log(req.body);
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
-        //console.log('count: ' + db.collection.count('issues'));
-        //console.log(Issue.collections);
-        let collection = db.collection(project);
-        collection.find(query).toArray(function(err,docs){res.json(docs)});
-        /*
-        if (db.collection(project)) {
-          console.log('collection exists');
-          db.createCollection(project);
-          //console.log(db.collection(project));
-        } else {
-          db.createCollection(project);
-          //var Issue = mongoose.model('Issue', schema);
-        }
-        */
+        if (err) throw err;
+        var dbo = db.db("fcc-cert6-project2");
+        
+        dbo.createCollection(project);
+        
       });
       
-    /*
+    
       let id;
       let title = req.body.issue_title;
       let text = req.body.issue_text;
