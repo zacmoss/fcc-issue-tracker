@@ -16,6 +16,8 @@ const CONNECTION_STRING = process.env.DB; //MongoClient.connect(CONNECTION_STRIN
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+Promise = require('bluebird');
+mongoose.Promise = Promise;
 mongoose.connect(CONNECTION_STRING);
 
 var schema = new Schema({
@@ -52,7 +54,7 @@ module.exports = function (app) {
       let updatedOn = 1;
       let open = true;
       console.log('sT: ' + statusText);
-      var createAndSaveIssue = function(done) {
+      const createAndSaveIssue = function(done) {
         const issue = new Issue({issue_title: title,
                                  issue_text: text,
                                  created_by: by,
