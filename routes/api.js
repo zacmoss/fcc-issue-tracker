@@ -183,7 +183,10 @@ module.exports = function (app) {
         );
         */
         
+        //console.log(req.body);
+        console.log(updatedObject);
         // for below to determine if object empty to not update
+        
         function isEmpty(obj) {
           for(var key in obj) {
               if(obj.hasOwnProperty(key))
@@ -191,6 +194,8 @@ module.exports = function (app) {
           }
           return true;
         }
+        
+        
         
         try {
           if (isEmpty(updatedObject)) {
