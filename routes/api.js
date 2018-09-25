@@ -44,6 +44,18 @@ module.exports = function (app) {
     .get(function (req, res){
       var project = req.params.project; // /api/issues/<project>
       let query = req.query // /api/issues/apitest?<query>
+      let queryObject = {};
+      if (req.query.id) queryObject._id = req.query._id;
+      if (req.query.title) queryObject.title = req.query.issue_title;
+      //issue_text
+      if (req.query.text) queryObject.text = req.query.issue_text;
+      //created_by
+      if (req.query.created_by) queryObject.created_by = req.query.created_by;
+      //assigned_to
+      //status_text
+      //created_on
+      //updated_on
+      //open
       
       MongoClient.connect(CONNECTION_STRING, { useNewUrlParser: true }, function(err, db) {
         if (err) throw err;
@@ -51,9 +63,14 @@ module.exports = function (app) {
         
         // works
         //dbo.collection(project).find({created_by: 'zac'}).toArray(function(err,result){res.json(result)});
+        
         // shows all
-        dbo.collection(project).find().toArray(function(err,result){res.json(result)});
-
+        //dbo.collection(project).find().toArray(function(err,result){res.json(result)});
+        
+        dbo.collection(project).find(queryObject).toArray(function(err, result) {
+          res.json(result);
+        });
+        
       });
       
       
@@ -156,13 +173,13 @@ module.exports = function (app) {
         });
         */
         try {
-           dbo.collection(project).deleteOne({_id: ObjectId(id)});
+          dbo.collection(project).deleteOne({_id: ObjectId(id)});
+          res.send('Issue ' + id + 'deleted');
         } catch (e) {
-           console.log(e);
+          console.log(e);
+          res.send('Issue ' + id + 'not deleted.');
         }
-        
       });
-    
     });
     
 };
