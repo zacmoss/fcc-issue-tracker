@@ -185,6 +185,12 @@ module.exports = function (app) {
         
         //console.log(req.body);
         console.log(updatedObject);
+        console.log(req);
+        if (Object.entries(updatedObject)[1]) {
+            console.log('there is an entry');
+        } else {
+            console.log('no entry');
+        }
         // for below to determine if object empty to not update
         
         function isEmpty(obj) {

@@ -80,12 +80,14 @@ suite('Functional Tests', function() {
         chai.request(server)
         .put('/api/issues/test')
         .send({
-          _id: '5baa629c6af9520c82823c43'
+          _id: '5baa629c6af9520c82823c43',
+          issue_title: '',
+          
         })
         .end(function(err, res){
           assert.equal(res.status, 200);
           //assert.equal(res.text, 'Error. Issue not updated.');
-          console.log(res.text);
+          console.log(res);
           done();
         });
       });
