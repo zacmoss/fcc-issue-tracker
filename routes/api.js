@@ -142,10 +142,24 @@ module.exports = function (app) {
       let id = req.body._id;
     
       MongoClient.connect(CONNECTION_STRING, { useNewUrlParser: true }, function(err, db) {
-        if (err) throw err;
+        //if (err) throw err;
+        if (err) console.log(err);
         var dbo = db.db("fcc-cert6-project2");
         
-        dbo.collection(project).deleteOne({_id: ObjectId(id)});
+        /*
+        dbo.collection(project).deleteOne({_id: ObjectId(id)}, function(err, result) {
+          if (err) {
+            res.send('Issue ' + id + 'not deleted.');
+          } else {
+            res.send('Issue ' + id + 'deleted');
+          }
+        });
+        */
+        try {
+           dbo.collection(project).deleteOne({_id: ObjectId(id)});
+        } catch (e) {
+           console.log(e);
+        }
         
       });
     
