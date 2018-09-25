@@ -116,13 +116,17 @@ module.exports = function (app) {
           //res.json(doc);
         })
         */
-        try {
-          collection.insertOne(issue, function(err, doc) {
-            res.send(issue);
-          });
-        } catch (e) {
-          console.log(e);
-          res.send('Error with input. Issue not added.');
+        if (issue.title === '' || issue.text === '' || issue.created_by === '') {
+          res.send('Please provide title, text, and created by.');
+        } else {
+          try {
+            collection.insertOne(issue, function(err, doc) {
+              res.send(issue);
+            });
+          } catch (e) {
+            console.log(e);
+            res.send('Error with input. Issue not added.');
+          }
         }
       });
     })

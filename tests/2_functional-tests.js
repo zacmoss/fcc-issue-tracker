@@ -40,14 +40,15 @@ suite('Functional Tests', function() {
         chai.request(server)
         .post('/api/issues/test')
         .send({
-          issue_title: 'Title',
+          issue_title: '',
           issue_text: 'text',
           created_by: 'Functional Test - Every field filled in',
         })
         .end(function(err, res){
           assert.equal(res.status, 200);
+          console.log('RESPONSE: ' + res.status);
+          console.log('ERROR: ' + err);
           
-          //fill me in too!
           
           done();
         });
