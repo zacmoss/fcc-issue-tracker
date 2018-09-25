@@ -40,23 +40,36 @@ suite('Functional Tests', function() {
         chai.request(server)
         .post('/api/issues/test')
         .send({
-          issue_title: '',
+          issue_title: 'Title',
           issue_text: 'text',
           created_by: 'Functional Test - Every field filled in',
         })
         .end(function(err, res){
           assert.equal(res.status, 200);
-          console.log('RESPONSE: ' + res.status);
-          console.log('ERROR: ' + err);
-          
-          
+          assert.equal(res.body.title, 'Title');
+          assert.equal(res.body.text, 'text');
+          assert.equal(res.body.created_by, 'Functional Test - Every field filled in');
+          //console.log(res.text);
+          //console.log(res);
           done();
         });
         
       });
       
       test('Missing required fields', function(done) {
-        
+        chai.request(server)
+        .post('/api/issues/test')
+        .send({
+          issue_title: '',
+          issue_text: 'text',
+          created_by: 'Functional Test - Every field filled in',
+        })
+        .end(function(err, res){
+          assert.equal(res.status, 200);
+          assert.equal(res.text, 'Please provide title, text, and created by.');
+          //console.log(res);
+          done();
+        });
       });
       
     });
@@ -64,7 +77,19 @@ suite('Functional Tests', function() {
     suite('PUT /api/issues/{project} => text', function() {
       
       test('No body', function(done) {
-        
+        chai.request(server)
+        .put('/api/issues/test')
+        .send({
+          issue_title: '',
+          issue_text: 'text',
+          created_by: 'Functional Test - Every field filled in',
+        })
+        .end(function(err, res){
+          assert.equal(res.status, 200);
+          assert.equal(res.text, 'Please provide title, text, and created by.');
+          //console.log(res);
+          done();
+        });
       });
       
       test('One field to update', function(done) {
