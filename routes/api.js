@@ -143,36 +143,25 @@ module.exports = function (app) {
         if (err) throw err;
         var dbo = db.db("fcc-cert6-project2");
         
-        
-        // gets open boolean
-        //let open;
-        //dbo.collection(project).findOne({_id: ObjectId(id)}, function(err, result){open = result.open});
-        //let open = true;
-        
-        
+        // below is if these fields are not empty save to object for database update
+        let updatedObject = {
+          updatedOn: new Date()
+        };
+        if (!req.body.issue_title === '') updatedObject.title = req.body.title;
+        if (!req.body.issue_text === '') updatedObject.text = req.body.text;
+        if (!req.body.created_by === '') updatedObject.created_by = req.body.created_by;
+        if (!req.body.assigned_to === '') updatedObject.assigned_to = req.body.assigned_to;
+        if (!req.body.status_text === '') updatedObject.status_text = req.body.status_text;
+        if (req.body.open === false) updatedObject.open = false;
+        console.log('title input ' + req.body.issue_title);
         //works
         //dbo.collection(project).findOne({title: "test99"}, function(err, result){res.json(result)});
         
-        // WORKS ObjectId(id)!!!!!
-        /*
-        dbo.collection(project).findOneAndUpdate(
-            //{ title: "test99" },
-            {_id: ObjectId(id)},
-            { $set: {
-              title: req.body.issue_title,
-              text: req.body.issue_text,
-              created_by: req.body.created_by,
-              assignedTo: req.body.assigned_to,
-              statusText: req.body.status_text,
-              //createdOn: new Date(),
-              updatedOn: new Date(),
-              open: open
-            } }
-            //upsert: true
-        );
-        */
         try {
           // WORKS ObjectId(id)!!!!!
+          console.log(updatedObject);
+          dbo.collection(project).findOneAndUpdate(updatedObject);
+          /*
           dbo.collection(project).findOneAndUpdate(
               {_id: ObjectId(id)},
               { $set: {
@@ -186,6 +175,7 @@ module.exports = function (app) {
                 open: open
               } }
           );
+          */
           res.send('Successfully updated');
         } catch (e) {
           console.log(e);
