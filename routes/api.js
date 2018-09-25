@@ -45,17 +45,17 @@ module.exports = function (app) {
       var project = req.params.project; // /api/issues/<project>
       let query = req.query // /api/issues/apitest?<query>
       let queryObject = {};
+    
+      // query is <query>       //object variable must match database variable
       if (req.query.id) queryObject._id = req.query._id;
-      if (req.query.title) queryObject.title = req.query.issue_title;
-      //issue_text
-      if (req.query.text) queryObject.text = req.query.issue_text;
-      //created_by
+      if (req.query.title) queryObject.title = req.query.title;
+      if (req.query.text) queryObject.text = req.query.text;
       if (req.query.created_by) queryObject.created_by = req.query.created_by;
-      //assigned_to
-      //status_text
-      //created_on
-      //updated_on
-      //open
+      if (req.query.assigned_to) queryObject.assigned_to = req.query.assigned_to;
+      if (req.query.status_text) queryObject.status_text = req.query.status_text;
+      if (req.query.created_on) queryObject.created_on = req.query.created_on;
+      if (req.query.updated_on) queryObject.updated_on = req.query.updated_on;
+      if (req.query.open) queryObject.open = req.query.open;
       
       MongoClient.connect(CONNECTION_STRING, { useNewUrlParser: true }, function(err, db) {
         if (err) throw err;
@@ -67,9 +67,20 @@ module.exports = function (app) {
         // shows all
         //dbo.collection(project).find().toArray(function(err,result){res.json(result)});
         
+        // works
+        /*
         dbo.collection(project).find(queryObject).toArray(function(err, result) {
           res.json(result);
         });
+        */
+        try {
+          dbo.collection(project).find(queryObject).toArray(function(err, result) {
+            res.json(result);
+          });
+        } catch (e) {
+          console.log(e);
+          res.send('E');
+        }
         
       });
       
@@ -93,10 +104,10 @@ module.exports = function (app) {
           title: req.body.issue_title,
           text: req.body.issue_text,
           created_by: req.body.created_by,
-          assignedTo: req.body.assigned_to,
-          statusText: req.body.status_text,
-          createdOn: 1,
-          updatedOn: 1,
+          assigned_to: req.body.assigned_to,
+          status_text: req.body.status_text,
+          created_on: 1,
+          updated_on: 1,
           open: true
         }
         collection.insertOne(issue, function(err, doc) {
