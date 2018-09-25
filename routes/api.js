@@ -163,6 +163,7 @@ module.exports = function (app) {
         //dbo.collection(project).findOne({title: "test99"}, function(err, result){res.json(result)});
         
         /*
+        // WORKS ObjectId(id)!!!!!
         dbo.collection(project).findOneAndUpdate(
             {_id: ObjectId(id)},
             { $set: {
@@ -178,11 +179,18 @@ module.exports = function (app) {
         );
         */
         
+        // for below to determine if object empty to not update
+        function isEmpty(obj) {
+          for(var key in obj) {
+              if(obj.hasOwnProperty(key))
+                  return false;
+          }
+          return true;
+        }
+        
         try {
-          // WORKS ObjectId(id)!!!!!
-          console.log(updatedObject);
-          if (updatedObject.length === 0) {
-            res.send('No updated field send');
+          if (isEmpty(updatedObject)) {
+            res.send('No updated field sent');
           } else {
             updatedObject.updated_on = new Date();
             dbo.collection(project).findOneAndUpdate(
