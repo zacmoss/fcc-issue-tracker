@@ -68,19 +68,20 @@ module.exports = function (app) {
         //dbo.collection(project).find().toArray(function(err,result){res.json(result)});
         
         // works
-        /*
         dbo.collection(project).find(queryObject).toArray(function(err, result) {
           res.json(result);
         });
-        */
+        
+        /* no reason for this
         try {
           dbo.collection(project).find(queryObject).toArray(function(err, result) {
             res.json(result);
           });
         } catch (e) {
           console.log(e);
-          res.send('E');
+          res.send('Error with query');
         }
+        */
         
       });
       
@@ -110,9 +111,19 @@ module.exports = function (app) {
           updated_on: 1,
           open: true
         }
+        /* works old
         collection.insertOne(issue, function(err, doc) {
           //res.json(doc);
         })
+        */
+        try {
+          collection.insertOne(issue, function(err, doc) {
+            res.send(issue);
+          });
+        } catch (e) {
+          console.log(e);
+          res.send('Error with input. Issue not added.');
+        }
       });
     })
     
@@ -143,6 +154,7 @@ module.exports = function (app) {
         //dbo.collection(project).findOne({title: "test99"}, function(err, result){res.json(result)});
         
         // WORKS ObjectId(id)!!!!!
+        /*
         dbo.collection(project).findOneAndUpdate(
             //{ title: "test99" },
             {_id: ObjectId(id)},
@@ -158,6 +170,27 @@ module.exports = function (app) {
             } }
             //upsert: true
         );
+        */
+        try {
+          // WORKS ObjectId(id)!!!!!
+          dbo.collection(project).findOneAndUpdate(
+              {_id: ObjectId(id)},
+              { $set: {
+                title: req.body.issue_title,
+                text: req.body.issue_text,
+                created_by: req.body.created_by,
+                assignedTo: req.body.assigned_to,
+                statusText: req.body.status_text,
+                //createdOn: new Date(),
+                updatedOn: new Date(),
+                open: open
+              } }
+          );
+          res.send('Successfully updated');
+        } catch (e) {
+          console.log(e);
+          res.send('Error. Issue not updated.');
+        }
         
         
       });
