@@ -200,20 +200,29 @@ suite('Functional Tests', function() {
         chai.request(server)
         .delete('/api/issues/test')
         .send({
-          _id: '5baaa72481e0bb44938f9642'
+          _id: ''
         })
         .end(function(err, res){
           assert.equal(res.status, 200);
           //console.log(res.body);
-          assert.isArray(res.body);
-          assert.isAbove(res.body.length, 0, 'More than zero items in results');
-          assert.equal(res.text, 'Issue ' + id + 'not deleted.')
+          assert.equal(res.text, 'Must input id')
           done();
         });
       });
       
       test('Valid _id', function(done) {
-        
+        let id = '5baaa72481e0bb44938f9642';
+        chai.request(server)
+        .delete('/api/issues/test')
+        .send({
+          _id: '5baaa72481e0bb44938f9642'
+        })
+        .end(function(err, res){
+          assert.equal(res.status, 200);
+          //console.log(res.body);
+          assert.equal(res.text, 'Issue ' + id + 'deleted')
+          done();
+        });
       });
       
     });

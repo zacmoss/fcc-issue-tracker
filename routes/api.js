@@ -233,12 +233,16 @@ module.exports = function (app) {
           }
         });
         */
+        if (id) {
         try {
           dbo.collection(project).deleteOne({_id: ObjectId(id)});
           res.send('Issue ' + id + 'deleted');
         } catch (e) {
           console.log(e);
           res.send('Issue ' + id + 'not deleted.');
+        }
+        } else {
+          res.send('Must input id');
         }
       });
     });
