@@ -80,14 +80,13 @@ suite('Functional Tests', function() {
         chai.request(server)
         .put('/api/issues/test')
         .send({
-          issue_title: '',
-          issue_text: 'text',
-          created_by: 'Functional Test - Every field filled in',
+          _id: '5baa629c6af9520c82823c43',
+          issue_title: ''
         })
         .end(function(err, res){
           assert.equal(res.status, 200);
-          assert.equal(res.text, 'Please provide title, text, and created by.');
-          //console.log(res);
+          //assert.equal(res.text, 'Error. Issue not updated.');
+          console.log(res);
           done();
         });
       });
