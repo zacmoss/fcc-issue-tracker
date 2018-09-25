@@ -8,7 +8,14 @@
 
 'use strict';
 
+// Lessons Learned
+
 // to select oid in database use ObjectId in id query as seen below
+
+// use try and catch for new mongodb versions
+
+// use MongoClient.connect and include { useNewUrlParser: true } as an argument
+
 
 var expect = require('chai').expect;
 var MongoClient = require('mongodb');
