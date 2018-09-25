@@ -160,11 +160,36 @@ suite('Functional Tests', function() {
       });
       
       test('One filter', function(done) {
-        
+        chai.request(server)
+        .get('/api/issues/test')
+        .query({
+          issue_title: 'Title'
+        })
+        .end(function(err, res){
+          assert.equal(res.status, 200);
+          //console.log(res.body);
+          assert.isArray(res.body);
+          assert.isAbove(res.body.length, 0, 'More than zero items in results');
+
+          done();
+        });
       });
       
       test('Multiple filters (test for multiple fields you know will be in the db for a return)', function(done) {
-        
+        chai.request(server)
+        .get('/api/issues/test')
+        .query({
+          issue_title: 'Title',
+          issue_text: 'text'
+        })
+        .end(function(err, res){
+          assert.equal(res.status, 200);
+          //console.log(res.body);
+          assert.isArray(res.body);
+          assert.isAbove(res.body.length, 0, 'More than zero items in results');
+
+          done();
+        });
       });
       
     });
@@ -172,7 +197,19 @@ suite('Functional Tests', function() {
     suite('DELETE /api/issues/{project} => text', function() {
       
       test('No _id', function(done) {
-        
+        chai.request(server)
+        .delete('/api/issues/test')
+        .send({
+          _id: '5baaa72481e0bb44938f9642'
+        })
+        .end(function(err, res){
+          assert.equal(res.status, 200);
+          //console.log(res.body);
+          assert.isArray(res.body);
+          assert.isAbove(res.body.length, 0, 'More than zero items in results');
+          assert.equal(res.text, 'Issue ' + id + 'not deleted.')
+          done();
+        });
       });
       
       test('Valid _id', function(done) {
