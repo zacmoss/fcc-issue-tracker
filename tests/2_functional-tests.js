@@ -46,8 +46,8 @@ suite('Functional Tests', function() {
         })
         .end(function(err, res){
           assert.equal(res.status, 200);
-          assert.equal(res.body.title, 'Title');
-          assert.equal(res.body.text, 'text');
+          assert.equal(res.body.issue_title, 'Title');
+          assert.equal(res.body.issue_text, 'text');
           assert.equal(res.body.created_by, 'Functional Test - Every field filled in');
           //console.log(res.text);
           //console.log(res);
@@ -82,22 +82,55 @@ suite('Functional Tests', function() {
         .send({
           _id: '5baa629c6af9520c82823c43',
           issue_title: '',
-          
+          issue_text: '',
+          created_by: '',
+          assigned_to: '',
+          status_text: ''
         })
         .end(function(err, res){
           assert.equal(res.status, 200);
-          //assert.equal(res.text, 'Error. Issue not updated.');
-          console.log(res);
+          assert.equal(res.text, 'No updated field sent');
+          //console.log(res.text);
           done();
         });
       });
       
       test('One field to update', function(done) {
-        
+        chai.request(server)
+        .put('/api/issues/test')
+        .send({
+          _id: '5baaa40c499ab23375a6fda6',
+          issue_title: 'Update Title',
+          issue_text: '',
+          created_by: '',
+          assigned_to: '',
+          status_text: ''
+        })
+        .end(function(err, res){
+          assert.equal(res.status, 200);
+          assert.equal(res.text, 'Successfully updated');
+          //console.log(res.text);
+          done();
+        });
       });
       
       test('Multiple fields to update', function(done) {
-        
+        chai.request(server)
+        .put('/api/issues/test')
+        .send({
+          _id: '5baaa40c499ab23375a6fda6',
+          issue_title: 'Update Title',
+          issue_text: 'Multiply fields updated',
+          created_by: '',
+          assigned_to: '',
+          status_text: ''
+        })
+        .end(function(err, res){
+          assert.equal(res.status, 200);
+          assert.equal(res.text, 'Successfully updated');
+          //console.log(res.text);
+          done();
+        });
       });
       
     });
@@ -110,6 +143,7 @@ suite('Functional Tests', function() {
         .query({})
         .end(function(err, res){
           assert.equal(res.status, 200);
+          //console.log(res.body);
           assert.isArray(res.body);
           assert.property(res.body[0], 'issue_title');
           assert.property(res.body[0], 'issue_text');
@@ -120,6 +154,7 @@ suite('Functional Tests', function() {
           assert.property(res.body[0], 'open');
           assert.property(res.body[0], 'status_text');
           assert.property(res.body[0], '_id');
+          
           done();
         });
       });

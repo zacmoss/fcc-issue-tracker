@@ -48,8 +48,8 @@ module.exports = function (app) {
     
       // query is <query>       //object variable must match database variable
       if (req.query.id) queryObject._id = req.query._id;
-      if (req.query.title) queryObject.title = req.query.title;
-      if (req.query.text) queryObject.text = req.query.text;
+      if (req.query.issue_title) queryObject.issue_title = req.query.issue_title;
+      if (req.query.issue_text) queryObject.issue_text = req.query.issue_text;
       if (req.query.created_by) queryObject.created_by = req.query.created_by;
       if (req.query.assigned_to) queryObject.assigned_to = req.query.assigned_to;
       if (req.query.status_text) queryObject.status_text = req.query.status_text;
@@ -102,8 +102,8 @@ module.exports = function (app) {
         if (!dbo.collection(project)) dbo.createCollection(project);
         let collection = dbo.collection(project);
         let issue = {
-          title: req.body.issue_title,
-          text: req.body.issue_text,
+          issue_title: req.body.issue_title,
+          issue_text: req.body.issue_text,
           created_by: req.body.created_by,
           assigned_to: req.body.assigned_to,
           status_text: req.body.status_text,
@@ -116,7 +116,7 @@ module.exports = function (app) {
           //res.json(doc);
         })
         */
-        if (issue.title === '' || issue.text === '' || issue.created_by === '') {
+        if (issue.issue_title === '' || issue.issue_text === '' || issue.created_by === '') {
           res.send('Please provide title, text, and created by.');
         } else {
           try {
@@ -156,8 +156,8 @@ module.exports = function (app) {
         */
         
         let updatedObject = {};
-        if (req.body.issue_title !== '') updatedObject.title = req.body.issue_title;
-        if (req.body.issue_text !== '') updatedObject.text = req.body.issue_text;
+        if (req.body.issue_title !== '') updatedObject.issue_title = req.body.issue_title;
+        if (req.body.issue_text !== '') updatedObject.issue_text = req.body.issue_text;
         if (req.body.created_by !== '') updatedObject.created_by = req.body.created_by;
         if (req.body.assigned_to !== '') updatedObject.assigned_to = req.body.assigned_to;
         if (req.body.status_text !== '') updatedObject.status_text = req.body.status_text;
@@ -183,16 +183,7 @@ module.exports = function (app) {
         );
         */
         
-        //console.log(req.body);
-        console.log(updatedObject);
-        console.log(req);
-        if (Object.entries(updatedObject)[1]) {
-            console.log('there is an entry');
-        } else {
-            console.log('no entry');
-        }
         // for below to determine if object empty to not update
-        
         function isEmpty(obj) {
           for(var key in obj) {
               if(obj.hasOwnProperty(key))
